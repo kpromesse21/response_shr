@@ -1,7 +1,7 @@
 <?php
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\api\AuthController;
 
 
 /*
@@ -14,14 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('api')->middleware('throttle:60,1')->group(function () {
+// Public routes without authentication
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
 
-    // Routes publiques
-   
-
-    // Routes protégées (ex. Sanctum ou autre)
-  
+// Protected routes (ex. Sanctum)
+Route::middleware('auth:sanctum')->group(function () {
+    // Add your protected routes here
 });
+
+Route::get('/test', [AuthController::class, 'test']);
 
 // Fallback pour les routes API non trouvées
 Route::fallback(function () {
